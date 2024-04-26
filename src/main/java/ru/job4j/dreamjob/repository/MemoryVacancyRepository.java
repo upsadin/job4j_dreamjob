@@ -3,6 +3,7 @@ package ru.job4j.dreamjob.repository;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Vacancy;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,12 +18,12 @@ public class MemoryVacancyRepository implements VacancyRepository {
     private final Map<Integer, Vacancy> vacancies = new HashMap<>();
 
     private MemoryVacancyRepository() {
-        save(new Vacancy(0, "Intern Java Developer"));
-        save(new Vacancy(0, "Junior Java Developer"));
-        save(new Vacancy(0, "Junior+ Java Developer"));
-        save(new Vacancy(0, "Middle Java Developer"));
-        save(new Vacancy(0, "Middle+ Java Developer"));
-        save(new Vacancy(0, "Senior Java Developer"));
+        save(new Vacancy(0, "Intern Java Developer", "", LocalDate.now()));
+        save(new Vacancy(0, "Junior Java Developer", "", LocalDate.now()));
+        save(new Vacancy(0, "Junior+ Java Developer", "", LocalDate.now()));
+        save(new Vacancy(0, "Middle Java Developer", "", LocalDate.now()));
+        save(new Vacancy(0, "Middle+ Java Developer", "", LocalDate.now()));
+        save(new Vacancy(0, "Senior Java Developer", "", LocalDate.now()));
     }
 
     public static MemoryVacancyRepository getINSTANCE() {
@@ -43,7 +44,8 @@ public class MemoryVacancyRepository implements VacancyRepository {
     @Override
     public boolean update(Vacancy vacancy) {
         return vacancies.computeIfPresent(vacancy.getId(),
-                (key, oldValue) -> new Vacancy(oldValue.getId(), vacancy.getTitle())) != null;
+                (key, oldValue) -> new Vacancy(
+                        oldValue.getId(), vacancy.getTitle(), vacancy.getDescription(), vacancy.getCreationDate())) != null;
     }
 
     @Override
